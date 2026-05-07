@@ -81,7 +81,8 @@ export default function Footer() {
 
         <div className="mt-12 pt-8 border-t border-teal-600">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-xs text-teal-300 font-serif">&copy; {new Date().getFullYear()} Dr. Bouchangour Mohammed. All rights reserved.</p>
+            <p className="text-xs text-teal-300 font-serif">&copy; {new Date().getFullYear()} Dr. Bouchangour Mohammed. All rights reserved.  Designé et développé avec ❤️ par <a href="https://www.facebook.com/ProfMalsahMoumen">ProfMoumenMalsah</a>
+</p>
             <p className="text-xs text-teal-300 font-serif">Université Mohammed Premier — Oujda, Morocco</p>
           </div>
         </div>
