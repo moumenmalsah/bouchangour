@@ -12,7 +12,7 @@
     "check": "tsc -b",
     "format": "prettier --write .",
     "predeploy": "npm run build",
-"deploy": "gh-pages -d build"
+    "deploy": "gh-pages -d build"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
