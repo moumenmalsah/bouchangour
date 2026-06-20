@@ -32,6 +32,7 @@ const sidebarLinks = [
   { path: '/idaraton/events', label: 'Events', icon: Calendar },
   { type: 'divider' as const },
   { path: '/idaraton/footer', label: 'Footer', icon: Palette },
+  { path: '/idaraton/home', label: 'Home Page', icon: FileText },
   { type: 'divider' as const },
   { path: '/idaraton/change-password', label: 'Change Password', icon: Key },
 ];
