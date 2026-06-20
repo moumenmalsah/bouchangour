@@ -4,7 +4,7 @@ import path from 'path'
 
 // https://vite.dev/config/
 export default defineConfig({
-  base: '/bouchangour/',
+  base: process.env.VERCEL ? '/' : '/bouchangour/',
   plugins: [react()],
   resolve: {
     alias: {
