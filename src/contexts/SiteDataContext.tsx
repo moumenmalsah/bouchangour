@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useEffect, useRef, type ReactNode } from 'react';
-import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { doc, getDoc } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
+import { getAdminPassword } from './AuthContext';
 
 export interface NavLink {
   path: string;
@@ -61,18 +62,20 @@ const defaultNavLinks: NavLink[] = [
   { path: '/events', label: 'Events' },
 ];
 
+const defaultFooter: FooterConfig = {
+  emails: ['bouchangour.mohammed@gmail.com', 'm.bouchangour@ump.ac.ma'],
+  location: 'Oujda, Morocco',
+  affiliations: [
+    { name: 'Laboratoire Ibn Al Banna des Mathématiques (LIABM)', description: 'Faculté des Sciences d\'Oujda' },
+    { name: 'Association Marocaine de Mathématiques et Intelligence Artificielle' },
+  ],
+  copyright: 'Dr. Bouchangour Mohammed. All rights reserved.',
+};
+
 const defaultData: SiteData = {
   navLinks: defaultNavLinks,
   content: {},
-  footer: {
-    emails: ['bouchangour.mohammed@gmail.com', 'm.bouchangour@ump.ac.ma'],
-    location: 'Oujda, Morocco',
-    affiliations: [
-      { name: 'Laboratoire Ibn Al Banna des Mathématiques (LIABM)', description: 'Faculté des Sciences d\'Oujda' },
-      { name: 'Association Marocaine de Mathématiques et Intelligence Artificielle' },
-    ],
-    copyright: 'Dr. Bouchangour Mohammed. All rights reserved.',
-  },
+  footer: defaultFooter,
 };
 
 const DOC_PATH = 'siteData/main';
@@ -91,9 +94,11 @@ export function SiteDataProvider({ children }: { children: ReactNode }) {
         const snap = await getDoc(ref);
         if (snap.exists()) {
           const remote = snap.data() as SiteData;
-          setData({ ...defaultData, ...remote });
-        } else {
-          await setDoc(ref, defaultData);
+          setData(prev => ({
+            ...prev,
+            ...remote,
+            footer: { ...defaultFooter, ...remote.footer },
+          }));
         }
       } catch {
         console.warn('Firestore unavailable, using defaults');
@@ -110,12 +115,18 @@ export function SiteDataProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (!initialized.current) return;
     const timer = setTimeout(async () => {
+      const password = getAdminPassword();
+      if (!password) return;
       try {
-        await setDoc(doc(db, DOC_PATH), saveRef.current);
+        await fetch('/api/save-data', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ password, data: saveRef.current }),
+        });
       } catch {
-        console.warn('Failed to save to Firestore');
+        console.warn('Failed to save via API');
       }
-    }, 300);
+    }, 500);
     return () => clearTimeout(timer);
   }, [data]);
 

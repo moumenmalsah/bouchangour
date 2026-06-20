@@ -1,24 +1,16 @@
 import { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
 
-const DEFAULT_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD || 'zawyaysf123';
 const AUTH_KEY = 'bouchangour-admin-auth';
+const PW_KEY = 'bouchangour-admin-pw';
 
 interface AuthContextType {
   isAuthenticated: boolean;
-  login: (password: string) => boolean;
+  login: (password: string) => Promise<boolean>;
   logout: () => void;
-  changePassword: (oldPassword: string, newPassword: string) => boolean;
+  changePassword: (oldPassword: string, newPassword: string) => Promise<boolean>;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
-
-function getStoredPassword(): string {
-  try {
-    return localStorage.getItem('bouchangour-admin-password') || DEFAULT_PASSWORD;
-  } catch {
-    return DEFAULT_PASSWORD;
-  }
-}
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [isAuthenticated, setIsAuthenticated] = useState(() => {
@@ -35,25 +27,41 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     } catch {}
   }, [isAuthenticated]);
 
-  const login = (password: string): boolean => {
-    const stored = getStoredPassword();
-    if (password === stored) {
-      setIsAuthenticated(true);
-      return true;
+  const login = async (password: string): Promise<boolean> => {
+    try {
+      const res = await fetch('/api/auth', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password }),
+      });
+      if (res.ok) {
+        setIsAuthenticated(true);
+        try { localStorage.setItem(PW_KEY, password); } catch {}
+        return true;
+      }
+      return false;
+    } catch {
+      return false;
     }
-    return false;
   };
 
   const logout = () => {
     setIsAuthenticated(false);
+    try { localStorage.removeItem(PW_KEY); } catch {}
   };
 
-  const changePassword = (oldPassword: string, newPassword: string): boolean => {
-    const stored = getStoredPassword();
-    if (oldPassword !== stored) return false;
+  const changePassword = async (oldPassword: string, newPassword: string): Promise<boolean> => {
     try {
-      localStorage.setItem('bouchangour-admin-password', newPassword);
-      return true;
+      const res = await fetch('/api/change-password', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ oldPassword, newPassword }),
+      });
+      if (res.ok) {
+        try { localStorage.setItem(PW_KEY, newPassword); } catch {}
+        return true;
+      }
+      return false;
     } catch {
       return false;
     }
@@ -70,4 +78,12 @@ export function useAuth() {
   const ctx = useContext(AuthContext);
   if (!ctx) throw new Error('useAuth must be used within AuthProvider');
   return ctx;
+}
+
+export function getAdminPassword(): string {
+  try {
+    return localStorage.getItem(PW_KEY) || '';
+  } catch {
+    return '';
+  }
 }
