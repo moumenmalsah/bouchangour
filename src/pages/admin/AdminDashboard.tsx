@@ -67,7 +67,7 @@ export default function AdminDashboard() {
           return (
             <Link
               key={section.key}
-              to={`/admin/${section.key}`}
+              to={`/idaraton/${section.key}`}
               className="bg-white rounded-xl border border-gray-200 p-5 hover:border-teal-200 hover:shadow-sm transition-all group"
             >
               <div className="flex items-center gap-4">

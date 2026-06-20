@@ -89,7 +89,7 @@ export default function ResearchManage() {
       <div className="flex items-start justify-between mb-8">
         <div>
           <div className="flex items-center gap-3 mb-1">
-            <Link to="/admin" className="p-1.5 rounded-lg hover:bg-gray-100 text-gray-400 hover:text-gray-600 transition-colors">
+            <Link to="/idaraton" className="p-1.5 rounded-lg hover:bg-gray-100 text-gray-400 hover:text-gray-600 transition-colors">
               <ArrowLeft className="w-4 h-4" />
             </Link>
             <h1 className="font-serif text-2xl lg:text-3xl font-bold text-gray-900">Research & Publications</h1>

@@ -19,18 +19,18 @@ import {
 } from 'lucide-react';
 
 const sidebarLinks = [
-  { path: '/admin', label: 'Dashboard', icon: LayoutDashboard },
-  { path: '/admin/menu', label: 'Menu', icon: Menu },
+  { path: '/idaraton', label: 'Dashboard', icon: LayoutDashboard },
+  { path: '/idaraton/menu', label: 'Menu', icon: Menu },
   { type: 'divider' as const },
-  { path: '/admin/courses', label: 'Courses', icon: BookOpen },
-  { path: '/admin/exams', label: 'Exams', icon: FileText },
-  { path: '/admin/exercices', label: 'Exercices', icon: Calculator },
-  { path: '/admin/tools', label: 'Tools & Softwares', icon: Code },
-  { path: '/admin/research', label: 'Research', icon: Microscope },
-  { path: '/admin/videos', label: 'Videos', icon: Video },
-  { path: '/admin/events', label: 'Events', icon: Calendar },
+  { path: '/idaraton/courses', label: 'Courses', icon: BookOpen },
+  { path: '/idaraton/exams', label: 'Exams', icon: FileText },
+  { path: '/idaraton/exercices', label: 'Exercices', icon: Calculator },
+  { path: '/idaraton/tools', label: 'Tools & Softwares', icon: Code },
+  { path: '/idaraton/research', label: 'Research', icon: Microscope },
+  { path: '/idaraton/videos', label: 'Videos', icon: Video },
+  { path: '/idaraton/events', label: 'Events', icon: Calendar },
   { type: 'divider' as const },
-  { path: '/admin/change-password', label: 'Change Password', icon: Key },
+  { path: '/idaraton/change-password', label: 'Change Password', icon: Key },
 ];
 
 export default function AdminLayout() {
@@ -41,7 +41,7 @@ export default function AdminLayout() {
   const { isAuthenticated, logout } = useAuth();
 
   if (!isAuthenticated) {
-    navigate('/admin/login', { replace: true });
+    navigate('/idaraton/login', { replace: true });
     return null;
   }
 
@@ -49,7 +49,7 @@ export default function AdminLayout() {
 
   const handleLogout = () => {
     logout();
-    navigate('/admin/login');
+    navigate('/idaraton/login');
   };
 
   return (
@@ -68,7 +68,7 @@ export default function AdminLayout() {
       >
         <div className="flex items-center justify-between h-16 px-4 border-b border-gray-200">
           {!collapsed && (
-            <Link to="/admin" className="font-serif text-lg font-bold text-teal-700 truncate">
+            <Link to="/idaraton" className="font-serif text-lg font-bold text-teal-700 truncate">
               Admin Panel
             </Link>
           )}

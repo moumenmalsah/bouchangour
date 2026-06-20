@@ -47,8 +47,8 @@ export default function App() {
           <Route path="/research" element={<ResearchPage />} />
           <Route path="/videos" element={<VideosPage />} />
           <Route path="/events" element={<EventsPage />} />
-          <Route path="/admin/login" element={<LoginPage />} />
-          <Route path="/admin" element={<AdminLayout />}>
+          <Route path="/idaraton/login" element={<LoginPage />} />
+          <Route path="/idaraton" element={<AdminLayout />}>
             <Route index element={<AdminDashboard />} />
             <Route path="menu" element={<MenuManage />} />
             <Route path="courses" element={<CoursesManage />} />

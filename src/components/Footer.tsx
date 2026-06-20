@@ -4,7 +4,7 @@ import { useSiteData } from '../contexts/SiteDataContext';
 
 export default function Footer() {
   const { data } = useSiteData();
-  const quickLinks = data.navLinks.filter(l => l.path !== '/admin');
+  const quickLinks = data.navLinks.filter(l => l.path !== '/idaraton');
   return (
     <footer className="bg-teal-700 text-white">
       <div className="section-padding py-16 lg:py-20">

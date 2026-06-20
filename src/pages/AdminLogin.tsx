@@ -11,7 +11,7 @@ export default function AdminLogin() {
   const navigate = useNavigate();
 
   if (isAuthenticated) {
-    navigate('/admin/dashboard', { replace: true });
+    navigate('/idaraton/dashboard', { replace: true });
     return null;
   }
 
@@ -19,7 +19,7 @@ export default function AdminLogin() {
     e.preventDefault();
     setError('');
     if (login(password)) {
-      navigate('/admin/dashboard');
+      navigate('/idaraton/dashboard');
     } else {
       setError('Mot de passe incorrect');
     }

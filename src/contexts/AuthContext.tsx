@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
 
-const DEFAULT_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD || 'admin123';
+const DEFAULT_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD || 'zawyaysf123';
 const AUTH_KEY = 'bouchangour-admin-auth';
 
 interface AuthContextType {

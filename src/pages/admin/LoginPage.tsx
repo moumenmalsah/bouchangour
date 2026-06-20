@@ -19,7 +19,7 @@ export default function LoginPage() {
     }
     const success = login(password);
     if (success) {
-      navigate('/admin');
+      navigate('/idaraton');
     } else {
       setError('Incorrect password');
     }

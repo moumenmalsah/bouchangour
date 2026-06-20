@@ -16,13 +16,13 @@ export default function AdminDashboard() {
   const navigate = useNavigate();
 
   if (!isAuthenticated) {
-    navigate('/admin', { replace: true });
+    navigate('/idaraton', { replace: true });
     return null;
   }
 
   const handleLogout = () => {
     logout();
-    navigate('/admin');
+    navigate('/idaraton');
   };
 
   return (
