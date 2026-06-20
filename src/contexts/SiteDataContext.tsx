@@ -1,4 +1,6 @@
-import { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
+import { createContext, useContext, useState, useEffect, useRef, type ReactNode } from 'react';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { db } from '@/lib/firebase';
 
 export interface NavLink {
   path: string;
@@ -23,6 +25,7 @@ interface SiteData {
 
 interface SiteDataContextType {
   data: SiteData;
+  loading: boolean;
   updateNavLinks: (links: NavLink[]) => void;
   addNavLink: (link: NavLink) => void;
   removeNavLink: (path: string) => void;
@@ -49,34 +52,48 @@ const defaultData: SiteData = {
   content: {},
 };
 
-const STORAGE_KEY = 'bouchangour-site-data';
-
-function loadData(): SiteData {
-  try {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    if (stored) {
-      const parsed = JSON.parse(stored);
-      return { ...defaultData, ...parsed };
-    }
-  } catch {
-  }
-  return defaultData;
-}
-
-function saveData(data: SiteData) {
-  try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-  } catch {
-  }
-}
+const DOC_PATH = 'siteData/main';
 
 const SiteDataContext = createContext<SiteDataContextType | null>(null);
 
 export function SiteDataProvider({ children }: { children: ReactNode }) {
-  const [data, setData] = useState<SiteData>(loadData);
+  const [data, setData] = useState<SiteData>(defaultData);
+  const [loading, setLoading] = useState(true);
+  const initialized = useRef(false);
 
   useEffect(() => {
-    saveData(data);
+    async function load() {
+      try {
+        const ref = doc(db, DOC_PATH);
+        const snap = await getDoc(ref);
+        if (snap.exists()) {
+          const remote = snap.data() as SiteData;
+          setData({ ...defaultData, ...remote });
+        } else {
+          await setDoc(ref, defaultData);
+        }
+      } catch {
+        console.warn('Firestore unavailable, using defaults');
+      }
+      setLoading(false);
+      initialized.current = true;
+    }
+    load();
+  }, []);
+
+  const saveRef = useRef(data);
+  saveRef.current = data;
+
+  useEffect(() => {
+    if (!initialized.current) return;
+    const timer = setTimeout(async () => {
+      try {
+        await setDoc(doc(db, DOC_PATH), saveRef.current);
+      } catch {
+        console.warn('Failed to save to Firestore');
+      }
+    }, 300);
+    return () => clearTimeout(timer);
   }, [data]);
 
   const updateNavLinks = (links: NavLink[]) => {
@@ -153,6 +170,7 @@ export function SiteDataProvider({ children }: { children: ReactNode }) {
     <SiteDataContext.Provider
       value={{
         data,
+        loading,
         updateNavLinks,
         addNavLink,
         removeNavLink,
