@@ -1,9 +1,10 @@
-import { Mail, Phone, MapPin, ExternalLink, BookOpen } from 'lucide-react';
+import { Mail, MapPin, ExternalLink, BookOpen } from 'lucide-react';
 import { Link } from 'react-router';
 import { useSiteData } from '../contexts/SiteDataContext';
 
 export default function Footer() {
   const { data } = useSiteData();
+  const { footer } = data;
   const quickLinks = data.navLinks.filter(l => l.path !== '/idaraton');
   return (
     <footer className="bg-teal-700 text-white">
@@ -13,21 +14,15 @@ export default function Footer() {
           <div className="space-y-6">
             <h3 className="font-script text-3xl text-teal-200">Contact</h3>
             <div className="space-y-4">
-              <a href="mailto:bouchangour.mohammed@gmail.com" className="flex items-center gap-3 text-teal-100 hover:text-white transition-colors group">
-                <Mail className="w-4 h-4 text-teal-300 group-hover:scale-110 transition-transform" />
-                <span className="text-sm font-serif">bouchangour.mohammed@gmail.com</span>
-              </a>
-              <a href="mailto:m.bouchangour@ump.ac.ma" className="flex items-center gap-3 text-teal-100 hover:text-white transition-colors group">
-                <Mail className="w-4 h-4 text-teal-300 group-hover:scale-110 transition-transform" />
-                <span className="text-sm font-serif">m.bouchangour@ump.ac.ma</span>
-              </a>
-              <div className="flex items-center gap-3 text-teal-100">
-                <Phone className="w-4 h-4 text-teal-300" />
-                <span className="text-sm font-serif">+212 6 15 23 48 73</span>
-              </div>
+              {footer.emails.map((email, i) => (
+                <a key={i} href={`mailto:${email}`} className="flex items-center gap-3 text-teal-100 hover:text-white transition-colors group">
+                  <Mail className="w-4 h-4 text-teal-300 group-hover:scale-110 transition-transform" />
+                  <span className="text-sm font-serif">{email}</span>
+                </a>
+              ))}
               <div className="flex items-start gap-3 text-teal-100">
                 <MapPin className="w-4 h-4 text-teal-300 mt-0.5" />
-                <span className="text-sm font-serif">Oujda, Morocco</span>
+                <span className="text-sm font-serif">{footer.location}</span>
               </div>
             </div>
           </div>
@@ -53,28 +48,26 @@ export default function Footer() {
           <div className="space-y-6">
             <h3 className="font-script text-3xl text-teal-200">Affiliations</h3>
             <div className="space-y-4">
-              <div className="flex items-start gap-3">
-                <BookOpen className="w-4 h-4 text-teal-300 mt-1" />
-                <div>
-                  <p className="text-sm font-serif text-white">Laboratoire Ibn Al Banna des Mathématiques (LIABM)</p>
-                  <p className="text-xs text-teal-300 mt-1">Faculté des Sciences d&apos;Oujda</p>
+              {footer.affiliations.map((aff, i) => (
+                <div key={i} className="flex items-start gap-3">
+                  <BookOpen className="w-4 h-4 text-teal-300 mt-1" />
+                  <div>
+                    <p className="text-sm font-serif text-white">{aff.name}</p>
+                    {aff.description && (
+                      <p className="text-xs text-teal-300 mt-1">{aff.description}</p>
+                    )}
+                  </div>
                 </div>
-              </div>
-              <div className="flex items-start gap-3">
-                <BookOpen className="w-4 h-4 text-teal-300 mt-1" />
-                <div>
-                  <p className="text-sm font-serif text-white">Association Marocaine de Mathématiques et Intelligence Artificielle</p>
-                </div>
-              </div>
+              ))}
             </div>
           </div>
         </div>
 
         <div className="mt-12 pt-8 border-t border-teal-600">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-xs text-teal-300 font-serif">&copy; {new Date().getFullYear()} Dr. Bouchangour Mohammed. All rights reserved.  Designé et développé avec ❤️ par <a href="https://www.facebook.com/ProfMalsahMoumen">ProfMoumenMalsah</a>
+            <p className="text-xs text-teal-300 font-serif">&copy; {new Date().getFullYear()} {footer.copyright} Designé et développé avec ❤️ par <a href="https://www.facebook.com/ProfMalsahMoumen">ProfMoumenMalsah</a>
 </p>
-            <p className="text-xs text-teal-300 font-serif">Université Mohammed Premier — Oujda, Morocco</p>
+            <p className="text-xs text-teal-300 font-serif">{footer.location}</p>
           </div>
         </div>
       </div>

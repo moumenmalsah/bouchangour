@@ -11,6 +11,7 @@ import {
   Microscope,
   Video,
   Calendar,
+  Palette,
   ChevronLeft,
   ChevronRight,
   X,
@@ -29,6 +30,8 @@ const sidebarLinks = [
   { path: '/idaraton/research', label: 'Research', icon: Microscope },
   { path: '/idaraton/videos', label: 'Videos', icon: Video },
   { path: '/idaraton/events', label: 'Events', icon: Calendar },
+  { type: 'divider' as const },
+  { path: '/idaraton/footer', label: 'Footer', icon: Palette },
   { type: 'divider' as const },
   { path: '/idaraton/change-password', label: 'Change Password', icon: Key },
 ];

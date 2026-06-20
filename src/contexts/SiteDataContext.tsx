@@ -18,9 +18,22 @@ export interface SectionData {
   items: ContentItem[];
 }
 
+export interface FooterLink {
+  label: string;
+  url: string;
+}
+
+export interface FooterConfig {
+  emails: string[];
+  location: string;
+  affiliations: { name: string; description?: string }[];
+  copyright: string;
+}
+
 interface SiteData {
   navLinks: NavLink[];
   content: Record<string, SectionData>;
+  footer: FooterConfig;
 }
 
 interface SiteDataContextType {
@@ -33,6 +46,7 @@ interface SiteDataContextType {
   addContentItem: (section: string, item: ContentItem) => void;
   updateContentItem: (section: string, id: string, updates: Partial<ContentItem>) => void;
   removeContentItem: (section: string, id: string) => void;
+  updateFooter: (footer: FooterConfig) => void;
   resetToDefaults: () => void;
 }
 
@@ -50,6 +64,15 @@ const defaultNavLinks: NavLink[] = [
 const defaultData: SiteData = {
   navLinks: defaultNavLinks,
   content: {},
+  footer: {
+    emails: ['bouchangour.mohammed@gmail.com', 'm.bouchangour@ump.ac.ma'],
+    location: 'Oujda, Morocco',
+    affiliations: [
+      { name: 'Laboratoire Ibn Al Banna des Mathématiques (LIABM)', description: 'Faculté des Sciences d\'Oujda' },
+      { name: 'Association Marocaine de Mathématiques et Intelligence Artificielle' },
+    ],
+    copyright: 'Dr. Bouchangour Mohammed. All rights reserved.',
+  },
 };
 
 const DOC_PATH = 'siteData/main';
@@ -162,6 +185,10 @@ export function SiteDataProvider({ children }: { children: ReactNode }) {
     }));
   };
 
+  const updateFooter = (footer: FooterConfig) => {
+    setData(prev => ({ ...prev, footer }));
+  };
+
   const resetToDefaults = () => {
     setData(defaultData);
   };
@@ -178,6 +205,7 @@ export function SiteDataProvider({ children }: { children: ReactNode }) {
         addContentItem,
         updateContentItem,
         removeContentItem,
+        updateFooter,
         resetToDefaults,
       }}
     >

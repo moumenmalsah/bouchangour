@@ -20,6 +20,7 @@ import ToolsManage from './pages/admin/ToolsManage';
 import ResearchManage from './pages/admin/ResearchManage';
 import VideosManage from './pages/admin/VideosManage';
 import EventsManage from './pages/admin/EventsManage';
+import FooterManage from './pages/admin/FooterManage';
 import ChangePasswordPage from './pages/admin/ChangePasswordPage';
 import LoginPage from './pages/admin/LoginPage';
 import ContentManage from './pages/admin/ContentManage';
@@ -58,6 +59,7 @@ export default function App() {
             <Route path="research" element={<ResearchManage />} />
             <Route path="videos" element={<VideosManage />} />
             <Route path="events" element={<EventsManage />} />
+            <Route path="footer" element={<FooterManage />} />
             <Route path="change-password" element={<ChangePasswordPage />} />
             <Route path=":section" element={<ContentManage />} />
           </Route>
