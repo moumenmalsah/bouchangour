@@ -1,5 +1,5 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { db } from './_lib/firebase';
+import { db } from './_lib/firebase.js';
 
 const PASSWORD_DOC = 'adminConfig/settings';
 const DATA_DOC = 'siteData/main';
