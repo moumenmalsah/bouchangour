@@ -1,7 +1,9 @@
 import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { BookOpen, Award, GraduationCap, FlaskConical, Presentation, Code, Languages, FileText, Download } from 'lucide-react';
+import { BookOpen, Award, GraduationCap, FlaskConical, Presentation, Code, Languages, FileText, Download, Calendar, ExternalLink, ImageIcon } from 'lucide-react';
+import { useSiteData } from '../contexts/SiteDataContext';
+import { Link } from 'react-router';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -64,6 +66,9 @@ const teaching = [
 export default function HomePage() {
   const heroRef = useRef<HTMLDivElement>(null);
   const sectionsRef = useRef<HTMLElement[]>([]);
+  const { data } = useSiteData();
+  const eventItems = data.content.events?.items || [];
+  const homeEvents = (eventItems as unknown as { id: string; title: string; image: string; imagesLink: string; eventLink: string }[]).slice(0, 6);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -293,6 +298,52 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* Events */}
+      {homeEvents.length > 0 && (
+        <section ref={(el) => addToRefs(el, 8)} className="py-20 lg:py-28 bg-white">
+          <div className="section-padding max-w-6xl mx-auto">
+            <div className="text-center mb-14 reveal-item">
+              <span className="font-script text-3xl text-teal-500">Activités</span>
+              <h2 className="font-serif text-3xl lg:text-4xl font-bold text-gray-900 mt-2">Events & Activities</h2>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {homeEvents.map((event, index) => (
+                <div key={event.id || index} className="reveal-item group bg-white rounded-xl border border-teal-100 overflow-hidden hover:border-teal-300 hover:shadow-md transition-all duration-300">
+                  <div className="aspect-[4/3] bg-teal-50 overflow-hidden">
+                    {event.image ? (
+                      <img src={event.image} alt={event.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        onError={e => { (e.target as HTMLImageElement).style.display = 'none'; }} />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center"><ImageIcon className="w-10 h-10 text-teal-300" /></div>
+                    )}
+                  </div>
+                  <div className="p-4">
+                    <h3 className="font-serif text-sm font-semibold text-gray-900 group-hover:text-teal-700 transition-colors">{event.title}</h3>
+                    <div className="flex items-center gap-2 mt-3">
+                      {event.imagesLink && (
+                        <a href={event.imagesLink} target="_blank" rel="noopener noreferrer" className="text-xs text-teal-600 hover:text-teal-800 inline-flex items-center gap-1">
+                          <ImageIcon className="w-3 h-3" /> Gallery
+                        </a>
+                      )}
+                      {event.eventLink && (
+                        <a href={event.eventLink} target="_blank" rel="noopener noreferrer" className="text-xs text-teal-600 hover:text-teal-800 inline-flex items-center gap-1">
+                          <ExternalLink className="w-3 h-3" /> Link
+                        </a>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div className="text-center mt-10 reveal-item">
+              <Link to="/events" className="inline-flex items-center gap-2 px-6 py-2.5 bg-teal-600 text-white text-sm font-serif rounded-full hover:bg-teal-700 transition-colors shadow-md hover:shadow-lg">
+                <Calendar className="w-4 h-4" />View All Events
+              </Link>
+            </div>
+          </div>
+        </section>
+      )}
     </div>
   );
 }

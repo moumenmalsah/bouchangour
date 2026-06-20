@@ -1,19 +1,10 @@
 import { Mail, Phone, MapPin, ExternalLink, BookOpen } from 'lucide-react';
 import { Link } from 'react-router';
-
-const quickLinks = [
-  { label: 'Home', href: '/' },
-  { label: 'Courses', href: '/courses' },
-  { label: 'Exams', href: '/exams' },
-  { label: 'Exercices', href: '/exercices' },
-  { label: 'Tools & Softwares', href: '/tools' },
-  { label: 'Research & Publications', href: '/research' },
-  { label: 'Video & Tutorials', href: '/videos' },
-  { label: 'Certifications', href: '/certifications' },
-  { label: 'Teaching', href: '/teaching' },
-];
+import { useSiteData } from '../contexts/SiteDataContext';
 
 export default function Footer() {
+  const { data } = useSiteData();
+  const quickLinks = data.navLinks.filter(l => l.path !== '/admin');
   return (
     <footer className="bg-teal-700 text-white">
       <div className="section-padding py-16 lg:py-20">
@@ -47,8 +38,8 @@ export default function Footer() {
             <div className="space-y-3">
               {quickLinks.map((link) => (
                 <Link
-                  key={link.href}
-                  to={link.href}
+                  key={link.path}
+                  to={link.path}
                   className="flex items-center gap-2 text-sm font-serif text-teal-100 hover:text-white transition-colors group"
                 >
                   <ExternalLink className="w-3 h-3 text-teal-300 opacity-0 group-hover:opacity-100 transition-opacity" />

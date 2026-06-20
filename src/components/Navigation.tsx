@@ -1,23 +1,15 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router';
 import { Menu, X, GraduationCap } from 'lucide-react';
-
-const links = [
-  { path: '/', label: 'Home' },
-  { path: '/courses', label: 'Courses' },
-  { path: '/exams', label: 'Exams' },
-  { path: '/exercices', label: 'Exercices' },
-  { path: '/tools', label: 'Tools & Softwares' },
-  { path: '/research', label: 'Research & Publications' },
-  { path: '/videos', label: 'Video & Tutorials' },
-  { path: '/certifications', label: 'Certifications' },
-  { path: '/teaching', label: 'Teaching' },
-];
+import { useSiteData } from '../contexts/SiteDataContext';
 
 export default function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
+  const { data } = useSiteData();
+
+  const links = data.navLinks;
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 50);

@@ -1,20 +1,22 @@
 import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { FlaskConical, BookOpen, ExternalLink, Presentation, Award, GraduationCap, Users } from 'lucide-react';
+import { FlaskConical, BookOpen, ExternalLink, Presentation, Award, GraduationCap, Users, FolderOpen } from 'lucide-react';
+import { useSiteData } from '../contexts/SiteDataContext';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const publications = [
-  { title: "Maps Preserving the Local Spectral Subspaces of Product or Jordan Triple Product of Operators", authors: "M. Bouchangour, A. Jaatit", journal: "Rend. Circ. Mat. Palermo, II. Ser. 72, 1289–1301 (2022)", doi: "10.1007/s12215-022-00731-0", year: 2022 },
-  { title: "Maps preserving the local spectral subspace of generalized product of operators", authors: "M. Bouchangour, A. Jaatit", journal: "Advances in Operator Theory. 8(12), (2023)", doi: "10.1007/s43036-022-00242-w", year: 2023 },
-  { title: "New inequalities for (p,h)-convex functions for τ-measurable operators", authors: "M. A. Ighachane, M. Bouchangour", journal: "Filomat. 37(16), 5259–5271 (2023)", doi: "10.2298/FIL2316259I", year: 2023 },
-  { title: "Some refinements of real power form inequalities for convex functions via weak sub-majorization", authors: "M. A. Ighachane, M. Bouchangour", journal: "Operators and Matrices. 17(1), 213–233 (2023)", doi: "10.7153/oam-2023-17-16", year: 2023 },
-  { title: "An improvement of Alzer-Fonseca-Kovačec's type inequalities with applications", authors: "M. A. Ighachane, Z. Taki, M. Bouchangour", journal: "Filomat. 37(22), 7383–7399 (2023)", doi: "10.2298/FIL2322383I", year: 2023 },
-  { title: "Some refinements of real power form inequalities for (p,h)-convex functions via Weak sub-majorization", authors: "M. A. Ighachane, M. Bouchangour, Z. Taki", journal: "Operators and Matrices. 17(3), 793–808 (2023)", doi: "10.7153/oam-2023-17-52", year: 2023 },
-  { title: "Improved Jensen's type inequality for (p,h)-convex functions via Weak sub-majorization", authors: "M. A. Ighachane, M. Bouchangour", journal: "Filomat. 38(5), 1793–1806 (2024)", doi: "10.2298/FIL2405793I", year: 2024 },
-  { title: "Further refinements of real power form inequalities for convex functions via weak sub-majorization", authors: "M. A. Ighachane, D. Q. Huy, D. T. T. VAN, M. Bouchangour", journal: "Rend. Circ. Mat. Palermo, II. Ser. 73, 1101–1138 (2024)", doi: "10.1007/s12215-023-00974-5", year: 2024 },
-  { title: "Some generalizations of reverse power inequalities for log-concave functions", authors: "M. A. Ighachane, M. Bouchangour, M. W. Alomari", journal: "Appl. Set-Valued Anal. Optim. 7 (3), 291–311 (2025)", doi: "10.23952/asvao.7.2025.3.02", year: 2025 },
+interface ResearchData {
+  id: string;
+  title: string;
+  link: string;
+}
+
+const researchThemes = [
+  "Linear and Non-linear Preserver Problems",
+  "Operator Theory & Spectral Theory",
+  "Theory of Inequalities",
+  "Functional Analysis",
 ];
 
 const communications = [
@@ -30,15 +32,12 @@ const communications = [
   { title: "Maps preserving the local spectral subspace of product or Jordan triple product of operators", event: "4th National Meeting IC3M", location: "FP, Nador", date: "20-22 May 2021" },
 ];
 
-const researchThemes = [
-  "Linear and Non-linear Preserver Problems",
-  "Operator Theory & Spectral Theory",
-  "Theory of Inequalities",
-  "Functional Analysis",
-];
-
 export default function ResearchPage() {
   const sectionRef = useRef<HTMLDivElement>(null);
+  const { data } = useSiteData();
+
+  const pubItems = data.content.research?.items || [];
+  const publications = pubItems as unknown as ResearchData[];
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -51,7 +50,7 @@ export default function ResearchPage() {
       }
     });
     return () => ctx.revert();
-  }, []);
+  }, [publications]);
 
   return (
     <div className="min-h-screen bg-white">
@@ -103,25 +102,32 @@ export default function ResearchPage() {
             <h2 className="font-serif text-2xl lg:text-3xl font-bold text-gray-900">Publications</h2>
             <span className="text-xs font-serif text-teal-600 bg-teal-50 px-2 py-1 rounded-full">{publications.length} papers</span>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-            {publications.map((pub, index) => (
-              <div key={index} className="reveal-item group bg-white rounded-xl border border-teal-100 p-6 hover:border-teal-300 hover:shadow-md transition-all duration-300">
-                <div className="flex items-start gap-3 mb-3">
-                  <FlaskConical className="w-5 h-5 text-teal-500 mt-0.5 flex-shrink-0" />
-                  <h3 className="font-serif text-sm font-semibold text-gray-900 leading-snug group-hover:text-teal-700 transition-colors">{pub.title}</h3>
-                </div>
-                <p className="font-serif text-xs text-gray-500 ml-8">{pub.authors}</p>
-                <p className="font-serif text-xs text-teal-600 ml-8 mt-1 italic">{pub.journal}</p>
-                {pub.doi && (
-                  <div className="ml-8 mt-3 pt-3 border-t border-teal-50">
-                    <a href={`https://doi.org/${pub.doi}`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-xs font-serif text-teal-500 hover:text-teal-700 transition-colors">
-                      <ExternalLink className="w-3 h-3" /><span className="truncate">DOI: {pub.doi}</span>
-                    </a>
+
+          {publications.length === 0 ? (
+            <div className="reveal-item text-center py-16">
+              <FolderOpen className="w-16 h-16 text-gray-200 mx-auto mb-4" />
+              <p className="font-serif text-gray-400">No publications available yet.</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+              {publications.map((pub, index) => (
+                <div key={pub.id || index} className="reveal-item group bg-white rounded-xl border border-teal-100 p-6 hover:border-teal-300 hover:shadow-md transition-all duration-300">
+                  <div className="flex items-start gap-3 mb-3">
+                    <FlaskConical className="w-5 h-5 text-teal-500 mt-0.5 flex-shrink-0" />
+                    <h3 className="font-serif text-sm font-semibold text-gray-900 leading-snug group-hover:text-teal-700 transition-colors">{pub.title}</h3>
                   </div>
-                )}
-              </div>
-            ))}
-          </div>
+                  {pub.link && (
+                    <div className="ml-8 pt-3 border-t border-teal-50">
+                      <a href={pub.link} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-xs font-serif text-teal-500 hover:text-teal-700 transition-colors">
+                        <ExternalLink className="w-3 h-3" />
+                        <span className="truncate">{pub.link}</span>
+                      </a>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
         </section>
 
         <section>
