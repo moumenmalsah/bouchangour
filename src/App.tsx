@@ -10,6 +10,7 @@ import ToolsPage from './pages/ToolsPage';
 import ResearchPage from './pages/ResearchPage';
 import VideosPage from './pages/VideosPage';
 import EventsPage from './pages/EventsPage';
+import TeachersPage from './pages/TeachersPage';
 import AdminLayout from './pages/admin/AdminLayout';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import MenuManage from './pages/admin/MenuManage';
@@ -20,6 +21,7 @@ import ToolsManage from './pages/admin/ToolsManage';
 import ResearchManage from './pages/admin/ResearchManage';
 import VideosManage from './pages/admin/VideosManage';
 import EventsManage from './pages/admin/EventsManage';
+import TeachersManage from './pages/admin/TeachersManage';
 import FooterManage from './pages/admin/FooterManage';
 import HomeManage from './pages/admin/HomeManage';
 import ChangePasswordPage from './pages/admin/ChangePasswordPage';
@@ -49,6 +51,7 @@ export default function App() {
           <Route path="/research" element={<ResearchPage />} />
           <Route path="/videos" element={<VideosPage />} />
           <Route path="/events" element={<EventsPage />} />
+          <Route path="/teachers" element={<TeachersPage />} />
           <Route path="/idaraton/login" element={<LoginPage />} />
           <Route path="/idaraton" element={<AdminLayout />}>
             <Route index element={<AdminDashboard />} />
@@ -60,6 +63,7 @@ export default function App() {
             <Route path="research" element={<ResearchManage />} />
             <Route path="videos" element={<VideosManage />} />
             <Route path="events" element={<EventsManage />} />
+            <Route path="teachers" element={<TeachersManage />} />
             <Route path="footer" element={<FooterManage />} />
             <Route path="home" element={<HomeManage />} />
             <Route path="change-password" element={<ChangePasswordPage />} />

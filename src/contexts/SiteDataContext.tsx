@@ -95,6 +95,7 @@ const defaultNavLinks: NavLink[] = [
   { path: '/research', label: 'Research & Publications' },
   { path: '/videos', label: 'Video & Tutorials' },
   { path: '/events', label: 'Events' },
+  { path: '/teachers', label: 'Teachers' },
 ];
 
 const defaultFooter: FooterConfig = {
